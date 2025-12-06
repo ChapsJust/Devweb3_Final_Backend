@@ -1,0 +1,76 @@
+[
+  {
+    "name": "Jean Dupont",
+    "age": 35,
+    "email": "jean.dupont@email.com",
+    "password": "Password123",
+    "isActive": true,
+    "roles": ["user"],
+    "createdAt": { "$date": "2024-01-15T10:30:00Z" }
+  },
+  {
+    "name": "Marie Martin",
+    "age": 28,
+    "email": "marie.martin@email.com",
+    "password": "SecurePass1",
+    "isActive": true,
+    "roles": ["user", "admin"],
+    "createdAt": { "$date": "2024-02-20T14:45:00Z" }
+  },
+  {
+    "name": "Pierre Bernard",
+    "age": 45,
+    "email": "pierre.bernard@email.com",
+    "password": "MyPass456",
+    "isActive": true,
+    "roles": ["user"],
+    "createdAt": { "$date": "2024-03-10T09:15:00Z" }
+  },
+  {
+    "name": "Sophie Leroy",
+    "age": 32,
+    "email": "sophie.leroy@email.com",
+    "password": "Sophie789",
+    "isActive": false,
+    "roles": ["user"],
+    "createdAt": { "$date": "2024-04-05T16:20:00Z" },
+    "lastLogin": { "$date": "2024-11-01T08:00:00Z" }
+  },
+  {
+    "name": "Lucas Moreau",
+    "age": 25,
+    "email": "lucas.moreau@email.com",
+    "password": "Lucas2024",
+    "isActive": true,
+    "roles": ["user", "moderator"],
+    "createdAt": { "$date": "2024-05-12T11:00:00Z" }
+  },
+  {
+    "name": "Emma Petit",
+    "age": 40,
+    "email": "emma.petit@email.com",
+    "password": "EmmaSecure1",
+    "isActive": true,
+    "roles": ["admin"],
+    "createdAt": { "$date": "2024-06-18T13:30:00Z" },
+    "lastLogin": { "$date": "2024-12-01T10:15:00Z" }
+  },
+  {
+    "name": "Thomas Roux",
+    "age": 55,
+    "email": "thomas.roux@email.com",
+    "password": "Thomas123",
+    "isActive": true,
+    "roles": ["user"],
+    "createdAt": { "$date": "2024-07-22T15:45:00Z" }
+  },
+  {
+    "name": "Camille Fournier",
+    "age": 29,
+    "email": "camille.fournier@email.com",
+    "password": "Camille456",
+    "isActive": true,
+    "roles": ["user", "analyst"],
+    "createdAt": { "$date": "2024-08-30T08:00:00Z" }
+  }
+]

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Logs
 logs
 *.log
@@ -137,3 +138,10 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+=======
+**/node_modules
+dist/
+temp/
+**/**/*.log
+config.js
+>>>>>>> 6b6eebd (Initial commit)

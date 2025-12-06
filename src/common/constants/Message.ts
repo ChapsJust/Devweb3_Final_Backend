@@ -1,0 +1,15 @@
+export const Messages = {
+  USER_NOT_FOUND: 'Utilisateur non trouvé.',
+  USER_ALREADY_EXISTS: 'L\'utilisateur existe déjà.',
+  STOCK_NOT_FOUND: 'Stock non trouvé.',
+  STOCK_ALREADY_EXISTS: 'Le stock existe déjà.',
+  INVALID_INPUT: 'Entrée invalide.',
+  REQUIRED_FIELD: 'Ce champ est requis.',
+  INVALID_TYPE: 'Type invalide pour le champ : {field}.',
+  MIN_LENGTH: 'La longueur minimale pour le champ {field} est de {min}.',
+  MAX_LENGTH: 'La longueur maximale pour le champ {field} est de {max}.',
+  MIN_VALUE: 'La valeur minimale pour le champ {field} est de {min}.',
+  MAX_VALUE: 'La valeur maximale pour le champ {field} est de {max}.',
+  ARRAY_MIN_ITEMS: 'Le tableau pour le champ {field} doit contenir au moins {min} éléments.',
+  ARRAY_MAX_ITEMS: 'Le tableau pour le champ {field} ne peut pas contenir plus de {max} éléments.',
+};

@@ -1,0 +1,102 @@
+[
+  {
+    "stockName": "Apple Inc",
+    "stockShortName": "AAPL",
+    "quantity": 150,
+    "unitPrice": 178.5,
+    "isAvailable": true,
+    "tags": ["tech", "nasdaq"],
+    "buyAt": { "$date": "2024-01-10T09:30:00Z" },
+    "lastUpdatedAt": { "$date": "2024-12-01T16:00:00Z" }
+  },
+  {
+    "stockName": "Microsoft Corporation",
+    "stockShortName": "MSFT",
+    "quantity": 200,
+    "unitPrice": 378.25,
+    "isAvailable": true,
+    "tags": ["tech", "nasdaq", "cloud"],
+    "buyAt": { "$date": "2024-02-15T10:00:00Z" },
+    "lastUpdatedAt": { "$date": "2024-12-01T16:00:00Z" }
+  },
+  {
+    "stockName": "Tesla Inc",
+    "stockShortName": "TSLA",
+    "quantity": 75,
+    "unitPrice": 242.8,
+    "isAvailable": true,
+    "tags": ["auto", "nasdaq", "ev"],
+    "buyAt": { "$date": "2024-03-20T11:15:00Z" },
+    "lastUpdatedAt": { "$date": "2024-12-01T16:00:00Z" }
+  },
+  {
+    "stockName": "Amazon",
+    "stockShortName": "AMZN",
+    "quantity": 100,
+    "unitPrice": 185.6,
+    "isAvailable": true,
+    "tags": ["tech", "ecommerce"],
+    "buyAt": { "$date": "2024-04-05T14:30:00Z" },
+    "lastUpdatedAt": { "$date": "2024-12-01T16:00:00Z" }
+  },
+  {
+    "stockName": "Alphabet Inc",
+    "stockShortName": "GOOGL",
+    "quantity": 80,
+    "unitPrice": 165.3,
+    "isAvailable": true,
+    "tags": ["tech", "nasdaq", "ai"],
+    "buyAt": { "$date": "2024-05-12T09:45:00Z" },
+    "lastUpdatedAt": { "$date": "2024-12-01T16:00:00Z" }
+  },
+  {
+    "stockName": "Meta Platforms",
+    "stockShortName": "META",
+    "quantity": 120,
+    "unitPrice": 565.4,
+    "isAvailable": true,
+    "tags": ["tech", "social"],
+    "buyAt": { "$date": "2024-06-18T13:00:00Z" },
+    "lastUpdatedAt": { "$date": "2024-12-01T16:00:00Z" }
+  },
+  {
+    "stockName": "NVIDIA Corporation",
+    "stockShortName": "NVDA",
+    "quantity": 50,
+    "unitPrice": 132.45,
+    "isAvailable": true,
+    "tags": ["tech", "ai", "gpu"],
+    "buyAt": { "$date": "2024-07-22T10:30:00Z" },
+    "lastUpdatedAt": { "$date": "2024-12-01T16:00:00Z" }
+  },
+  {
+    "stockName": "Johnson and Johnson",
+    "stockShortName": "JNJ",
+    "quantity": 180,
+    "unitPrice": 156.2,
+    "isAvailable": true,
+    "tags": ["health", "pharma"],
+    "buyAt": { "$date": "2024-08-10T11:00:00Z" },
+    "lastUpdatedAt": { "$date": "2024-12-01T16:00:00Z" }
+  },
+  {
+    "stockName": "Berkshire Hathaway",
+    "stockShortName": "BRK",
+    "quantity": 10,
+    "unitPrice": 453.8,
+    "isAvailable": false,
+    "tags": ["finance"],
+    "buyAt": { "$date": "2024-09-05T15:30:00Z" },
+    "lastUpdatedAt": { "$date": "2024-12-01T16:00:00Z" }
+  },
+  {
+    "stockName": "Visa Inc",
+    "stockShortName": "V",
+    "quantity": 0,
+    "unitPrice": 285.9,
+    "isAvailable": false,
+    "tags": ["finance", "payment"],
+    "buyAt": { "$date": "2024-10-15T09:00:00Z" },
+    "lastUpdatedAt": { "$date": "2024-12-01T16:00:00Z" }
+  }
+]
