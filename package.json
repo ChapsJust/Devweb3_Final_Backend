@@ -76,5 +76,13 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs"
+  "type": "commonjs",
+  "_moduleAliases": {
+    "@src": "src",
+    "@common": "src/common",
+    "@models": "src/models",
+    "@routes": "src/routes",
+    "@services": "src/services",
+    "@repos": "src/repos"
+  }
 }

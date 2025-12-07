@@ -1,30 +1,28 @@
-import morgan from 'morgan';
-import helmet from 'helmet';
-import express, { Request, Response, NextFunction } from 'express';
-import logger from 'jet-logger';
-
-import BaseRouter from './routes';
-import HttpStatusCodes from './common/constants/HttpStatusCodes';
-import { RouteError } from './common/util/route-errors';
-import { NodeEnvs } from './common/constants';
-import authenticateToken from './services/authenticateToken';
-import cors from 'cors';
-import StockRoutes from './routes/StockRoutes';
-import Paths from 'tests/common/Paths';
+import morgan from "morgan";
+import helmet from "helmet";
+import express, { Request, Response, NextFunction } from "express";
+import logger from "jet-logger";
+import "module-alias/register";
+import BaseRouter from "./routes";
+import HttpStatusCodes from "./common/constants/HttpStatusCodes";
+import { RouteError } from "./common/util/route-errors";
+import { NodeEnvs } from "./common/constants";
+import cors from "cors";
+import Paths from "./common/constants/Paths";
 
 const app = express();
 
-const allowedOrigins = ['http://localhost:3000', 'https://api.justin.intebec.ca'];
+const allowedOrigins = ["http://localhost:3000", "http://localhost:5173", "https://api.justin.intebec.ca", "https://justin.intebec.ca"];
 app.use(
   cors({
     origin: allowedOrigins,
-  }),
+  })
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 if (NodeEnvs.Dev) {
-  app.use(morgan('dev'));
+  app.use(morgan("dev"));
 }
 
 if (NodeEnvs.Production) {
