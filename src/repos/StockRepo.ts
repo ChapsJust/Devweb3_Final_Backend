@@ -1,4 +1,5 @@
-import { IStock, Stocks } from '@src/models/Stock';
+import { IStock, Stocks } from "@src/models/Stock";
+import { ObjectId } from "mongodb";
 
 /******************************************************************************
                                 Functions
@@ -53,12 +54,24 @@ async function add(stock: IStock): Promise<IStock> {
 /**
  * Mettre à jour un holding
  */
-async function update(stock: IStock): Promise<void> {
-  const stockToUpdate = await Stocks.findOne({ _id: stock });
-  if (stockToUpdate === null) {
-    throw new Error('Stock non trouvé');
+async function update(stock: IStock): Promise<IStock> {
+  const stockAModifier = await Stocks.findById(stock._id);
+
+  if (stockAModifier === null) {
+    throw new Error("Stock non trouvé");
   }
-  await Stocks.updateOne({ _id: stock._id }, stock);
+
+  stockAModifier.stockName = stock.stockName;
+  stockAModifier.stockShortName = stock.stockShortName;
+  stockAModifier.quantity = stock.quantity;
+  stockAModifier.unitPrice = stock.unitPrice;
+  stockAModifier.isAvailable = stock.isAvailable;
+  stockAModifier.tags = stock.tags;
+  stockAModifier.buyAt = stock.buyAt;
+  stockAModifier.lastUpdatedAt = stock.lastUpdatedAt;
+
+  await stockAModifier.save();
+  return stockAModifier;
 }
 
 /**

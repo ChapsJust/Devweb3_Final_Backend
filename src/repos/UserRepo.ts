@@ -1,4 +1,4 @@
-import { IUser, Users } from '../models/User';
+import { IUser, Users } from "../models/User";
 
 /**
  * Retourne tous les utilisateurs.
@@ -39,22 +39,26 @@ async function addUser(user: IUser) {
  * @param user
  * @returns Retourne le user modifié
  */
-async function updateUser(user: IUser): Promise<IUser | null> {
-  const userAModifier = await Users.findById({ _id: user._id });
-  if (!userAModifier) {
-    throw new Error('User non trouvé');
-  }
-  userAModifier.name = user.name;
-  userAModifier.email = user.email;
-  userAModifier.password = user.password;
-  userAModifier.solde = user.solde;
-  userAModifier.isAdmin = user.isAdmin;
-  userAModifier.stocks = user.stocks;
-  userAModifier.dateOfBirth = user.dateOfBirth;
-  userAModifier.createdAt = user.createdAt;
+async function updateUser(user: IUser): Promise<IUser> {
+  const userId = user._id || (user as any)._doc?._id;
 
-  await userAModifier.save();
-  return userAModifier;
+  const updatedUser = await Users.findByIdAndUpdate(
+    userId,
+    {
+      name: user.name,
+      email: user.email,
+      solde: user.solde,
+      stocks: user.stocks,
+      ...(user.password && { password: user.password }),
+    },
+    { new: true }
+  );
+
+  if (!updatedUser) {
+    throw new Error("User non trouvé");
+  }
+
+  return updatedUser;
 }
 
 /**

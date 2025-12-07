@@ -1,15 +1,18 @@
-import UserRepo from '@src/repos/UserRepo';
-import { IUser } from '@src/models/User';
-import { brotliCompress } from 'zlib';
-import jwt from 'jsonwebtoken';
-import ENV from '@src/common/constants/ENV';
-import bcrypt from 'bcrypt';
+import UserRepo from "@src/repos/UserRepo";
+import { IUser } from "@src/models/User";
+import { brotliCompress } from "zlib";
+import jwt from "jsonwebtoken";
+import ENV from "@src/common/constants/ENV";
+import bcrypt from "bcrypt";
+import StockRepo from "@src/repos/StockRepo";
+import { IStock } from "@src/models/Stock";
+import { I } from "vitest/dist/chunks/reporters.d.OXEK7y4s";
 
 /******************************************************************************
                                 Constants
 ******************************************************************************/
 
-export const USER_NOT_FOUND_ERR = 'User not found';
+export const USER_NOT_FOUND_ERR = "User not found";
 
 /******************************************************************************
                                 Functions
@@ -63,42 +66,96 @@ function _delete(id: string): Promise<void> {
   return UserRepo.deleteUser(id);
 }
 
-// SourceChatGPT : Promise<Omit<IUser, "password">>
-async function login(email: string, password: string): Promise<{ user: Omit<IUser, 'password'>, token: string }> {
-  const user = await UserRepo.getByEmail(email);
+async function buyStock(userId: string, stockId: string, quantity: number): Promise<IUser> {
+  try {
+    const user = await UserRepo.getUserById(userId);
 
-  if (!user) {
-    throw new Error('Email ou mot de passe incorrect');
+    if (!user) {
+      throw new Error("Utilisateur non trouvé");
+    }
+
+    const stock = await StockRepo.getOneID(stockId);
+
+    if (!stock) {
+      throw new Error("Stock non trouvé");
+    }
+
+    if (!stock.isAvailable) {
+      throw new Error("Stock non disponible");
+    }
+
+    if (stock.quantity < quantity) {
+      throw new Error(`Quantité insuffisante. Disponible: ${stock.quantity}`);
+    }
+
+    const userStocks = user.stocks || [];
+    const existingStockIndex = userStocks.findIndex((s) => s._id === stockId);
+
+    if (existingStockIndex >= 0) {
+      userStocks[existingStockIndex] = {
+        ...userStocks[existingStockIndex],
+        quantity: userStocks[existingStockIndex].quantity + quantity,
+      };
+    } else {
+      userStocks.push({
+        _id: stock._id?.toString() || stock._id,
+        stockName: stock.stockName,
+        stockShortName: stock.stockShortName,
+        quantity: quantity,
+        unitPrice: stock.unitPrice,
+        isAvailable: stock.isAvailable,
+        tags: stock.tags,
+        buyAt: new Date(),
+        lastUpdatedAt: stock.lastUpdatedAt,
+      } as IStock);
+    }
+
+    // Mettre à jour le stock
+    const newStockQuantity = stock.quantity - quantity;
+    stock.quantity = newStockQuantity;
+    stock.lastUpdatedAt = new Date();
+
+    await StockRepo.update(stock);
+
+    const updatedUser: IUser = {
+      ...user,
+      stocks: userStocks,
+    };
+
+    const result = await UserRepo.updateUser(updatedUser);
+
+    return result;
+  } catch (error) {
+    throw error;
   }
-
-  let isValidPassword = false;
-
-  // Vérifier si le mot de passe est hashé (nouveau utilisateur)
-  if (user.password.startsWith('$2b$')) {
-    isValidPassword = await bcrypt.compare(password, user.password);
-  } else {
-    // Mot de passe en clair (création bd ancienne)
-    isValidPassword = password === user.password;
-  }
-
-  if (!isValidPassword) {
-    throw new Error('Email ou mot de passe incorrect');
-  }
-
-  const token = jwt.sign({ id: user._id, email: user.email }, ENV.Jwtsecret, { expiresIn: '24h' });
-
-  const userObject = (user as any).toObject ? (user as any).toObject() : { ...user };
-  const { password: _, ...userWithoutPassword } = userObject;
-
-  return { user: userWithoutPassword, token };
 }
 
 // SourceChatGPT : Promise<Omit<IUser, "password">>
-async function register(userData: IUser): Promise<Omit<IUser, 'password'>> {
+async function login(email: string, password: string) {
+  const user = await UserRepo.getByEmail(email);
+
+  if (!user) {
+    throw new Error("Email ou mot de passe incorrect");
+  }
+
+  const isPasswordValid = await bcrypt.compare(password, user.password);
+
+  if (!isPasswordValid) {
+    throw new Error("Email ou mot de passe incorrect");
+  }
+
+  const token = jwt.sign({ userId: user._id, email: user.email }, ENV.Jwtsecret, { expiresIn: "7d" });
+
+  // Retourner token ET user (cookie)
+  return { token, user: { _id: user._id, name: user.name, email: user.email, stocks: user.stocks } };
+}
+
+// SourceChatGPT : Promise<Omit<IUser, "password">>
+async function register(userData: IUser): Promise<Omit<IUser, "password">> {
   const existingUser = await UserRepo.getByEmail(userData.email);
 
   if (existingUser) {
-    throw new Error('Cet email est déjà utilisé');
+    throw new Error("Cet email est déjà utilisé");
   }
 
   //HASH MOT DE PASSE
@@ -112,7 +169,6 @@ async function register(userData: IUser): Promise<Omit<IUser, 'password'>> {
 
   await UserRepo.addUser(newUser);
 
-  // Retourner sans le mot de passe (IMPORTANT)
   const { password: _, ...userWithoutPassword } = newUser;
   return userWithoutPassword;
 }
@@ -127,6 +183,7 @@ export default {
   addOne,
   updateOne,
   delete: _delete,
+  buyStock,
   login,
   register,
 } as const;

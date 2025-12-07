@@ -1,8 +1,9 @@
-import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
-import UserService from '@src/services/UserService';
-import { IUser } from '@src/models/User';
+import HttpStatusCodes from "@src/common/constants/HttpStatusCodes";
+import UserService from "@src/services/UserService";
+import { IUser } from "@src/models/User";
 
-import { IReq, IRes } from './common/types';
+import { IReq, IRes } from "./common/types";
+import { token } from "morgan";
 
 /******************************************************************************
                                 Functions
@@ -20,7 +21,7 @@ async function getOne(req: IReq, res: IRes) {
   const { id } = req.params;
   const user = await UserService.getUserById(id as string);
   if (!user) {
-    return res.status(HttpStatusCodes.NOT_FOUND).json({ error: 'User not found' });
+    return res.status(HttpStatusCodes.NOT_FOUND).json({ error: "User not found" });
   }
   return res.status(HttpStatusCodes.OK).json({ user });
 }
@@ -52,6 +53,36 @@ async function delete_(req: IReq, res: IRes) {
   return res.status(HttpStatusCodes.OK).end();
 }
 
+async function buyStock(req: IReq, res: IRes) {
+  const { stockId, quantity } = req.body;
+  const userId = (req as any).user?.userId;
+
+  if (!userId) {
+    return res.status(HttpStatusCodes.UNAUTHORIZED).json({ error: "Non authentifié" });
+  }
+
+  if (!stockId || typeof stockId !== "string") {
+    return res.status(HttpStatusCodes.BAD_REQUEST).json({
+      error: "stockId (string) requis",
+    });
+  }
+
+  if (typeof quantity !== "number" || quantity < 1) {
+    return res.status(HttpStatusCodes.BAD_REQUEST).json({
+      error: "quantity doit être un nombre > 0",
+    });
+  }
+
+  try {
+    const updatedUser = await UserService.buyStock(userId, stockId as string, quantity as number);
+    return res.status(HttpStatusCodes.OK).json({ user: updatedUser });
+  } catch (error) {
+    return res.status(HttpStatusCodes.BAD_REQUEST).json({
+      error: error instanceof Error ? error.message : "Erreur lors de l'achat",
+    });
+  }
+}
+
 async function login(req: IReq, res: IRes) {
   try {
     const email = req.body.email as string;
@@ -59,12 +90,23 @@ async function login(req: IReq, res: IRes) {
 
     if (!email || !password) {
       return res.status(HttpStatusCodes.BAD_REQUEST).json({
-        error: 'Email et mot de passe requis',
+        error: "Email et mot de passe requis",
       });
     }
 
     const result = await UserService.login(email, password);
-    return res.status(HttpStatusCodes.OK).json(result);
+
+    // Set httpOnly cookie
+    res.cookie("token", result.token, {
+      httpOnly: true,
+      secure: false, // false en dev
+      sameSite: process.env.NODE_ENV === "production" ? "strict" : "none", // 'none' permet cross-origin
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      domain: "localhost", // Partager entre tous les ports localhost
+    });
+
+    // Retourner seulement le user (pas le token)
+    return res.status(HttpStatusCodes.OK).json({ user: result.user, token: result.token });
   } catch (error) {
     return res.status(HttpStatusCodes.UNAUTHORIZED).json({
       error: (error as Error).message,
@@ -79,7 +121,7 @@ async function register(req: IReq, res: IRes) {
 
     if (!user?.email || !user.password || !user.name) {
       return res.status(HttpStatusCodes.BAD_REQUEST).json({
-        error: 'Nom, email et mot de passe requis',
+        error: "Nom, email et mot de passe requis",
       });
     }
 
@@ -92,6 +134,11 @@ async function register(req: IReq, res: IRes) {
   }
 }
 
+async function logout(req: IReq, res: IRes) {
+  res.clearCookie("token");
+  return res.status(HttpStatusCodes.OK).json({ message: "Déconnexion réussie" });
+}
+
 /******************************************************************************
                                 Export default
 ******************************************************************************/
@@ -102,6 +149,8 @@ export default {
   add,
   update,
   delete: delete_,
+  buyStock,
   login,
   register,
+  logout,
 } as const;

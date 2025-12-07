@@ -1,8 +1,9 @@
-import { Schema, model } from 'mongoose';
-import { validateAdultAge } from '../common/util/validators';
-import { CustomValidationMessages } from '../common/util/validators';
-import { parseObject, TParseOnError } from 'jet-validators/utils';
-import { isBoolean, isDate, isNumber, isString, isStringArray } from 'jet-validators';
+import { Schema, model } from "mongoose";
+import { validateAdultAge } from "../common/util/validators";
+import { CustomValidationMessages } from "../common/util/validators";
+import { parseObject, TParseOnError } from "jet-validators/utils";
+import { isBoolean, isDate, isNumber, isString, isStringArray } from "jet-validators";
+import { IStock } from "./Stock";
 
 export interface IUser {
   _id?: string;
@@ -11,7 +12,7 @@ export interface IUser {
   password: string;
   solde: number;
   isAdmin: boolean;
-  stocks: string[];
+  stocks: IStock[];
   createdAt: Date;
   dateOfBirth?: Date;
 }
@@ -24,41 +25,50 @@ export interface IUserLogin {
 const userSchema = new Schema({
   name: {
     type: String,
-    required: [true, 'Le nom est requis.'],
-    minlength: [2, 'Le nom doit avoir au moins 2 caractères.'],
-    maxlength: [50, 'Le nom ne peut pas dépasser 50 caractères.'],
+    required: [true, "Le nom est requis."],
+    minlength: [2, "Le nom doit avoir au moins 2 caractères."],
+    maxlength: [50, "Le nom ne peut pas dépasser 50 caractères."],
   },
   email: {
     type: String,
-    required: [true, 'L\'email est requis.'],
+    required: [true, "L'email est requis."],
     unique: true,
-    match: [/.+@.+\..+/, 'Veuillez entrer un email valide.'],
+    match: [/.+@.+\..+/, "Veuillez entrer un email valide."],
   },
   password: {
     type: String,
-    required: [true, 'Le mot de passe est requis.'],
-    minlength: [6, 'Le mot de passe doit avoir au moins 6 caractères.'],
+    required: [true, "Le mot de passe est requis."],
+    minlength: [6, "Le mot de passe doit avoir au moins 6 caractères."],
   },
   solde: {
     type: Number,
     default: 0,
-    min: [0, 'Le solde ne peut pas être négatif.'],
+    min: [0, "Le solde ne peut pas être négatif."],
   },
   isAdmin: {
     type: Boolean,
     default: false,
   },
-  stocks: {
-    type: [String],
-    default: [],
-  },
+  stocks: [
+    {
+      _id: String,
+      stockName: String,
+      stockShortName: String,
+      quantity: Number,
+      unitPrice: Number,
+      isAvailable: Boolean,
+      tags: [String],
+      buyAt: Date,
+      lastUpdatedAt: Date,
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now,
   },
   dateOfBirth: {
     type: Date,
-    required: [true, 'La date de naissance est requise.'],
+    required: [true, "La date de naissance est requise."],
     validate: {
       validator: validateAdultAge,
       message: CustomValidationMessages.ADULT_AGE,
@@ -66,12 +76,12 @@ const userSchema = new Schema({
   },
 });
 
-export const Users = model<IUser>('User', userSchema);
+export const Users = model<IUser>("User", userSchema);
 
 const DEFAULT_USER_VALS = () => ({
-  name: '',
-  email: '',
-  password: '',
+  name: "",
+  email: "",
+  password: "",
   solde: 0,
   isAdmin: false,
   stocks: [],
@@ -86,7 +96,7 @@ const parseUser = parseObject<IUser>({
   password: isString,
   solde: isNumber,
   isAdmin: isBoolean,
-  stocks: isStringArray,
+  stocks: Array.isArray,
   createdAt: isDate,
   dateOfBirth: isDate,
 });
@@ -99,7 +109,7 @@ const parseUserLogin = parseObject<IUserLogin>({
 function __new__(user?: Partial<IUser>): IUser {
   const retVal = { ...DEFAULT_USER_VALS(), ...user };
   return parseUser(retVal, (errors) => {
-    throw new Error('Setup new user failed ' + JSON.stringify(errors, null, 2));
+    throw new Error("Setup new user failed " + JSON.stringify(errors, null, 2));
   }) as IUser;
 }
 

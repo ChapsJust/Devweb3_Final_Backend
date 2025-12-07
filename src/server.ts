@@ -1,14 +1,15 @@
+import "module-alias/register";
 import morgan from "morgan";
 import helmet from "helmet";
 import express, { Request, Response, NextFunction } from "express";
 import logger from "jet-logger";
-import "module-alias/register";
 import BaseRouter from "./routes";
 import HttpStatusCodes from "./common/constants/HttpStatusCodes";
 import { RouteError } from "./common/util/route-errors";
 import { NodeEnvs } from "./common/constants";
 import cors from "cors";
 import Paths from "./common/constants/Paths";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
@@ -16,8 +17,10 @@ const allowedOrigins = ["http://localhost:3000", "http://localhost:5173", "https
 app.use(
   cors({
     origin: allowedOrigins,
+    credentials: true,
   })
 );
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

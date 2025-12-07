@@ -1,27 +1,26 @@
-import jwt from 'jsonwebtoken';
-import { Response, Request, NextFunction } from 'express';
-import HttpStatusCodes from '@src/common/constants/HttpStatusCodes';
-import ENV from '@src/common/constants/ENV';
+import jwt from "jsonwebtoken";
+import { Request, Response, NextFunction } from "express";
+import ENV from "@src/common/constants/ENV";
 
-/**
- * Intergiciel pour authentifier le jeton de l'utilisateur
- */
-function authenticateToken(req: Request, res: Response, next: NextFunction) {
-  const lastPartOfUrl = req.url.split('/').pop();
-  if (lastPartOfUrl === 'generatetoken') {
-    next();
-    return;
+const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1]; // Bearer TOKEN
+
+  if (!token) {
+    return res.status(401).json({ error: "Token manquant" });
   }
 
-  const authHeader = req.headers.authorization;
-  const token = authHeader?.split(' ')[1];
+  try {
+    const decoded = jwt.verify(token, ENV.Jwtsecret) as {
+      userId: string;
+      email: string;
+    };
 
-  if (token == null) return res.sendStatus(HttpStatusCodes.UNAUTHORIZED);
-
-  jwt.verify(token, ENV.Jwtsecret, (err: jwt.VerifyErrors | null) => {
-    if (err) return res.sendStatus(HttpStatusCodes.FORBIDDEN);
+    (req as any).user = decoded;
     next();
-  });
-}
+  } catch (error) {
+    return res.status(403).json({ error: "Token invalide ou expiré" });
+  }
+};
 
 export default authenticateToken;
