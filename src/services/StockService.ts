@@ -1,11 +1,12 @@
-import StockRepo from '@src/repos/StockRepo';
-import { IStock } from '@src/models/Stock';
+import StockRepo from "@src/repos/StockRepo";
+import { IStock } from "@src/models/Stock";
+import { I } from "vitest/dist/chunks/reporters.d.OXEK7y4s";
 
 /******************************************************************************
                                 Constants
 ******************************************************************************/
 
-export const STOCK_NOT_FOUND_ERR = 'Stock not found';
+export const STOCK_NOT_FOUND_ERR = "Stock not found";
 
 /******************************************************************************
                                 Functions
@@ -35,7 +36,7 @@ function addOne(stock: IStock): Promise<IStock> {
   return StockRepo.add(stock);
 }
 
-function updateOne(stock: IStock): Promise<void> {
+function updateOne(stock: IStock): Promise<IStock> {
   return StockRepo.update(stock);
 }
 

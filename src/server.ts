@@ -1,4 +1,3 @@
-import "module-alias/register";
 import morgan from "morgan";
 import helmet from "helmet";
 import express, { Request, Response, NextFunction } from "express";
@@ -10,6 +9,15 @@ import { NodeEnvs } from "./common/constants";
 import cors from "cors";
 import Paths from "./common/constants/Paths";
 import cookieParser from "cookie-parser";
+
+import moduleAlias from "module-alias";
+
+const isProd = process.env.NODE_ENV === "production";
+const aliases = {
+  "@src": isProd ? "dist" : "src",
+};
+
+moduleAlias.addAliases(aliases);
 
 const app = express();
 
