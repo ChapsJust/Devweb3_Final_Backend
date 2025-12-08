@@ -6,9 +6,11 @@ import { connect } from "mongoose";
 
 const SERVER_START_MSG = "Express server started on port: " + ENV.Port.toString();
 
+const port = process.env.PORT || ENV.Port;
+
 connect(ENV.Mongodb)
   .then(() => {
-    server.listen(ENV.Port, () => logger.info(SERVER_START_MSG));
+    server.listen(port, () => logger.info(SERVER_START_MSG));
   })
   .catch((err: unknown) => {
     const message = err instanceof Error ? err.message : String(err);
