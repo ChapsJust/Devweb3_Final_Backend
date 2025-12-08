@@ -16,7 +16,7 @@ import morgan from "morgan";
 import helmet from "helmet";
 import express, { Request, Response, NextFunction } from "express";
 import logger from "jet-logger";
-import BaseRouter from "@src/routes";
+import BaseRouter from "@src/routes/index";
 import HttpStatusCodes from "@src/common/constants/HttpStatusCodes";
 import { RouteError } from "@src/common/util/route-errors";
 import { NodeEnvs } from "@src/common/constants";
