@@ -1,4 +1,5 @@
 import HttpStatusCodes from "@src/common/constants/HttpStatusCodes";
+import { CustomValidationMessages, validateStockQuantity, validateUnitPrice } from "@src/common/util/validators";
 import { IStock } from "@src/models/Stock";
 
 import { IReq, IRes } from "@src/routes/common/types";
@@ -42,12 +43,38 @@ async function getOne(req: IReq, res: IRes) {
 
 async function add(req: IReq, res: IRes) {
   const { stock } = req.body;
+
+  if (!validateStockQuantity((stock as IStock).quantity)) {
+    return res.status(HttpStatusCodes.BAD_REQUEST).json({
+      error: CustomValidationMessages.INVALID_QUANTITY,
+    });
+  }
+
+  if (!validateUnitPrice((stock as IStock).unitPrice)) {
+    return res.status(HttpStatusCodes.BAD_REQUEST).json({
+      error: CustomValidationMessages.INVALID_PRICE,
+    });
+  }
+
   await StockService.addOne(stock as IStock);
   return res.status(HttpStatusCodes.CREATED).end();
 }
 
 async function update(req: IReq, res: IRes) {
   const { stock } = req.body;
+
+  if (!validateStockQuantity((stock as IStock).quantity)) {
+    return res.status(HttpStatusCodes.BAD_REQUEST).json({
+      error: CustomValidationMessages.INVALID_QUANTITY,
+    });
+  }
+
+  if (!validateUnitPrice((stock as IStock).unitPrice)) {
+    return res.status(HttpStatusCodes.BAD_REQUEST).json({
+      error: CustomValidationMessages.INVALID_PRICE,
+    });
+  }
+
   await StockService.updateOne(stock as IStock);
   return res.status(HttpStatusCodes.OK).end();
 }

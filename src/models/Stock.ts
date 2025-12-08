@@ -36,6 +36,10 @@ const stockSchema = new Schema({
     required: [true, "La quantité est requise."],
     min: [0, "La quantité ne peut pas être négative."],
     max: [1000000, "La quantité ne peut pas dépasser 1 000 000."],
+    validate: {
+      validator: Number.isInteger,
+      message: "La quantité doit être un nombre entier.",
+    },
   },
   unitPrice: {
     type: Number,

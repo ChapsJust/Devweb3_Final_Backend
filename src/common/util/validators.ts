@@ -1,6 +1,3 @@
-import { IStock } from '@src/models/Stock';
-import { IUser } from '@src/models/User';
-
 /**
  * Validation personnalisée: Vérifie que la date d'expiration est dans le futur
  */
@@ -49,13 +46,29 @@ export function validateStockName(name: string): boolean {
 }
 
 /**
+ * Validation: Vérifie que la quantité est un entier positif
+ */
+export function validateStockQuantity(quantity: number): boolean {
+  return Number.isInteger(quantity) && quantity > 0;
+}
+
+/**
+ * Validation: Vérifie que le prix unitaire est positif
+ */
+export function validateUnitPrice(price: number): boolean {
+  return typeof price === "number" && price > 0;
+}
+
+/**
  * Messages d'erreur personnalisés pour les validateurs
  *
  * REF: Généré par ChatGPT
  */
 export const CustomValidationMessages = {
-  FUTURE_DATE: 'La date d\'expiration doit être dans le futur.',
-  PASSWORD_STRENGTH: 'Le mot de passe doit contenir au moins une majuscule, ' + 'une minuscule et un chiffre.',
-  ADULT_AGE: 'L\'âge doit être compris entre 18 et 120 ans.',
-  INVALID_STOCK_NAME: 'Le nom de l\'action ne peut contenir que des ' + 'lettres, chiffres, espaces et tirets.',
+  FUTURE_DATE: "La date d'expiration doit être dans le futur.",
+  PASSWORD_STRENGTH: "Le mot de passe doit contenir au moins une majuscule, " + "une minuscule et un chiffre.",
+  ADULT_AGE: "L'âge doit être compris entre 18 et 120 ans.",
+  INVALID_STOCK_NAME: "Le nom de l'action ne peut contenir que des " + "lettres, chiffres, espaces et tirets.",
+  INVALID_QUANTITY: "La quantité doit être un nombre entier positif.",
+  INVALID_PRICE: "Le prix unitaire doit être un nombre positif.",
 };

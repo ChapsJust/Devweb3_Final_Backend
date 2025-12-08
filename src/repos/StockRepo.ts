@@ -61,8 +61,6 @@ async function update(stock: IStock): Promise<IStock> {
     throw new Error("Stock non trouvé");
   }
 
-  stockAModifier.stockName = stock.stockName;
-  stockAModifier.stockShortName = stock.stockShortName;
   stockAModifier.quantity = stock.quantity;
   stockAModifier.unitPrice = stock.unitPrice;
   stockAModifier.isAvailable = stock.isAvailable;
