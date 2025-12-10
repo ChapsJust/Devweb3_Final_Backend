@@ -26,7 +26,7 @@ import cookieParser from "cookie-parser";
 
 const app = express();
 
-const allowedOrigins = ["http://localhost:3000", "http://localhost:5173", "https://api.justin.intebec.ca", "https://justin.intebec.ca"];
+const allowedOrigins = ["http://localhost:3000", "http://localhost:5173", "https://api.justin.intebec.ca", "https://justin.intebec.ca", "https://devweb3-final-frontend.onrender.com"];
 app.use(
   cors({
     origin: allowedOrigins,
