@@ -15,6 +15,7 @@ export interface IUser {
   stocks: IStock[];
   createdAt: Date;
   dateOfBirth?: Date;
+  address?: string;
 }
 
 export interface IUserLogin {
@@ -74,9 +75,11 @@ const userSchema = new Schema({
       message: CustomValidationMessages.ADULT_AGE,
     },
   },
+  address: {
+    type: String,
+    maxlength: [200, "L'adresse ne peut pas dépasser 200 caractères."],
+  },
 });
-
-export const Users = model<IUser>("User", userSchema);
 
 const DEFAULT_USER_VALS = () => ({
   name: "",
@@ -87,6 +90,7 @@ const DEFAULT_USER_VALS = () => ({
   stocks: [],
   createdAt: new Date(),
   dateOfBirth: new Date(),
+  address: "",
 });
 
 const parseUser = parseObject<IUser>({
@@ -99,6 +103,7 @@ const parseUser = parseObject<IUser>({
   stocks: Array.isArray,
   createdAt: isDate,
   dateOfBirth: isDate,
+  address: isString,
 });
 
 const parseUserLogin = parseObject<IUserLogin>({
@@ -126,5 +131,7 @@ function test(arg: unknown, errCb?: TParseOnError): arg is IUser {
 function testlogin(arg: unknown, errCb?: TParseOnError): arg is IUserLogin {
   return !!parseUserLogin(arg, errCb);
 }
+
+export const Users = model<IUser>("User", userSchema);
 
 export default { new: __new__, test, testlogin } as const;

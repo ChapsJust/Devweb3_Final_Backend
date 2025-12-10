@@ -96,15 +96,6 @@ async function login(req: IReq, res: IRes) {
 
     const result = await UserService.login(email, password);
 
-    // Set httpOnly cookie
-    res.cookie("token", result.token, {
-      httpOnly: true,
-      secure: false, // false en dev
-      sameSite: process.env.NODE_ENV === "production" ? "strict" : "none", // 'none' permet cross-origin
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-      domain: "localhost", // Partager entre tous les ports localhost
-    });
-
     // Retourner seulement le user (pas le token)
     return res.status(HttpStatusCodes.OK).json({ user: result.user, token: result.token });
   } catch (error) {
@@ -134,11 +125,6 @@ async function register(req: IReq, res: IRes) {
   }
 }
 
-async function logout(req: IReq, res: IRes) {
-  res.clearCookie("token");
-  return res.status(HttpStatusCodes.OK).json({ message: "Déconnexion réussie" });
-}
-
 /******************************************************************************
                                 Export default
 ******************************************************************************/
@@ -152,5 +138,4 @@ export default {
   buyStock,
   login,
   register,
-  logout,
 } as const;

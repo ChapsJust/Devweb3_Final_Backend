@@ -27,7 +27,6 @@ userRouter.post(Paths.Users.Add, authenticateToken, UserRoutes.add);
 userRouter.put(Paths.Users.Update, authenticateToken, UserRoutes.update);
 userRouter.delete(Paths.Users.Delete, authenticateToken, UserRoutes.delete);
 userRouter.put(Paths.Users.BuyStock, authenticateToken, UserRoutes.buyStock);
-userRouter.post(Paths.Users.Logout, authenticateToken, UserRoutes.logout);
 
 // ** Stock Router ** //
 const stockRouter = Router();
