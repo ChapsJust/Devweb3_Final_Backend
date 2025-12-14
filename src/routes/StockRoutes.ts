@@ -56,8 +56,8 @@ async function add(req: IReq, res: IRes) {
     });
   }
 
-  await StockService.addOne(stock as IStock);
-  return res.status(HttpStatusCodes.CREATED).end();
+  const newStock = await StockService.addOne(stock as IStock);
+  return res.status(HttpStatusCodes.CREATED).json({ stock: newStock });
 }
 
 async function update(req: IReq, res: IRes) {
