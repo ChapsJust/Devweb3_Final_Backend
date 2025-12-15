@@ -23,6 +23,7 @@ import { NodeEnvs } from "@src/common/constants";
 import cors from "cors";
 import Paths from "@src/common/constants/Paths";
 import cookieParser from "cookie-parser";
+import path from "path";
 
 const app = express();
 
@@ -45,6 +46,16 @@ if (NodeEnvs.Production) {
   app.use(helmet());
 }
 
+app.get("/api-docs/", async (req, res) => {
+  res.set("Content-Security-Policy", "script-src blob:");
+  res.set("Content-Security-Policy", "worker-src blob:");
+  res.sendFile(path.join(__dirname, "index.html"));
+});
+
+// redirige vers api-docs
+app.get("/", (req, res) => {
+  res.redirect("/api-docs");
+});
 app.use(Paths.Base, BaseRouter);
 
 app.use((err: Error, _: Request, res: Response, next: NextFunction) => {
