@@ -1,69 +1,99 @@
-<<<<<<< HEAD
-# Devweb3_Final_Backend
-=======
-## About
+# StockTrader API - Backend
 
-This project was created with [express-generator-typescript](https://github.com/seanpmaxwell/express-generator-typescript).
+API REST pour l'application de simulation de trading d'actions StockTrader.
 
-**IMPORTANT** for demo purposes I had to disable `helmet` in production. In any real world app you should change these 3 lines of code in `src/server.ts`:
-```ts
-// eslint-disable-next-line n/no-process-env
-if (!process.env.DISABLE_HELMET) {
-  app.use(helmet());
-}
+## Fonctionnalités
+
+- **Authentification** : Inscription, connexion et gestion des tokens JWT
+- **Gestion des utilisateurs** : CRUD complet des utilisateurs
+- **Gestion des stocks** : Liste, achat et vente d'actions
+- **Portefeuille** : Gestion du portefeuille utilisateur
+- **Documentation API** : Interface Swagger interactive
+
+## Installation
+
+### 1. Cloner le projet
+
+```bash
+git clone https://github.com/ChapsJust/Devweb3_Final_Backend.git
+cd backend/
 ```
 
-To just this:
-```ts
-app.use(helmet());
+### 2. Configuration
+
+```bash
+npm install
+cp .env.example .env
 ```
 
+## Lancement
 
-## Available Scripts
+### Mode développement
 
-### `npm run clean-install`
+```bash
+npm run dev
+```
 
-Remove the existing `node_modules/` folder, `package-lock.json`, and reinstall all library modules.
+### Mode production
 
+```bash
+npm run build
+npm start
+```
 
-### `npm run dev` or `npm run dev:hot` (hot reloading)
+## Tests
 
-Run the server in development mode.<br/>
+```bash
+npm run test
+```
 
-**IMPORTANT** development mode uses `swc` for performance reasons which DOES NOT check for typescript errors. Run `npm run type-check` to check for type errors. NOTE: you should use your IDE to prevent most type errors.
+## Endpoints API
 
+### Authentification
 
-### `npm test` or `npm run test:hot` (hot reloading)
+| Méthode | Endpoint              | Description |
+| ------- | --------------------- | ----------- |
+| POST    | `/api/users/register` | Inscription |
+| POST    | `/api/users/login`    | Connexion   |
 
-Run all unit-tests.
+### Utilisateurs
 
+| Méthode | Endpoint         | Description              |
+| ------- | ---------------- | ------------------------ |
+| GET     | `/api/users`     | Liste des utilisateurs   |
+| GET     | `/api/users/:id` | Détails d'un utilisateur |
+| PUT     | `/api/users/:id` | Modifier un utilisateur  |
+| DELETE  | `/api/users/:id` | Supprimer un utilisateur |
 
-### `npm test -- "name of test file" (i.e. users).`
+### Stocks
 
-Run a single unit-test.
+| Méthode | Endpoint           | Description          |
+| ------- | ------------------ | -------------------- |
+| GET     | `/api/stocks`      | Liste des actions    |
+| GET     | `/api/stocks/:id`  | Détails d'une action |
+| POST    | `/api/stocks/buy`  | Acheter une action   |
+| POST    | `/api/stocks/sell` | Vendre une action    |
 
+### Jetons
 
-### `npm run lint`
+| Méthode | Endpoint              | Description         |
+| ------- | --------------------- | ------------------- |
+| POST    | `/api/jetons/refresh` | Rafraîchir le token |
 
-Check for linting errors.
+## Scripts disponibles
 
+| Script          | Description                  |
+| --------------- | ---------------------------- |
+| `npm run dev`   | Lancer en mode développement |
+| `npm run build` | Compiler le projet           |
+| `npm start`     | Lancer en mode production    |
+| `npm run test`  | Exécuter les tests           |
+| `npm run lint`  | Vérifier le code avec ESLint |
 
-### `npm run build`
+## Auteur
 
-Build the project for production.
+Justin
 
+## Licence
 
-### `npm start`
-
-Run the production build (Must be built first).
-
-
-### `npm run type-check`
-
-Check for typescript errors.
-
-
-## Additional Notes
-
-- If `npm run dev` gives you issues with bcrypt on MacOS you may need to run: `npm rebuild bcrypt --build-from-source`. 
->>>>>>> 6b6eebd (Initial commit)
+Ce projet est réalisé dans le cadre du cours de Développement Web 3.
