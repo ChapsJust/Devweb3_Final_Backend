@@ -47,48 +47,23 @@ npm start
 npm run test
 ```
 
-## Endpoints API
+## Jeu de données
 
-### Authentification
+Dans le fichier src/dev
+Contient deux documents json.
+La BD se nomme : Holding_DB
 
-| Méthode | Endpoint              | Description |
-| ------- | --------------------- | ----------- |
-| POST    | `/api/users/register` | Inscription |
-| POST    | `/api/users/login`    | Connexion   |
+## Utilisateur pour la connexion
 
-### Utilisateurs
-
-| Méthode | Endpoint         | Description              |
-| ------- | ---------------- | ------------------------ |
-| GET     | `/api/users`     | Liste des utilisateurs   |
-| GET     | `/api/users/:id` | Détails d'un utilisateur |
-| PUT     | `/api/users/:id` | Modifier un utilisateur  |
-| DELETE  | `/api/users/:id` | Supprimer un utilisateur |
-
-### Stocks
-
-| Méthode | Endpoint           | Description          |
-| ------- | ------------------ | -------------------- |
-| GET     | `/api/stocks`      | Liste des actions    |
-| GET     | `/api/stocks/:id`  | Détails d'une action |
-| POST    | `/api/stocks/buy`  | Acheter une action   |
-| POST    | `/api/stocks/sell` | Vendre une action    |
-
-### Jetons
-
-| Méthode | Endpoint              | Description         |
-| ------- | --------------------- | ------------------- |
-| POST    | `/api/jetons/refresh` | Rafraîchir le token |
-
-## Scripts disponibles
-
-| Script          | Description                  |
-| --------------- | ---------------------------- |
-| `npm run dev`   | Lancer en mode développement |
-| `npm run build` | Compiler le projet           |
-| `npm start`     | Lancer en mode production    |
-| `npm run test`  | Exécuter les tests           |
-| `npm run lint`  | Vérifier le code avec ESLint |
+{
+"name": "Camille Fournier",
+"age": 29,
+"email": "camille.fournier@email.com",
+"password": "Camille456",
+"isActive": true,
+"roles": ["user", "analyst"],
+"createdAt": { "$date": "2024-08-30T08:00:00Z" }
+}
 
 ## Auteur
 
