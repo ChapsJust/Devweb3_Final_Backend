@@ -21,7 +21,6 @@ connect(ENV.Mongodb)
   })
   .catch((err: unknown) => {
     const message = err instanceof Error ? err.message : String(err);
-    console.error("MongoDB connection failed:", message);
     logger.err("Erreur de connexion MongoDB: " + message);
     process.exit(1);
   });
