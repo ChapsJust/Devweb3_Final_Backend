@@ -42,7 +42,6 @@ describe("UserRoutes", () => {
         address: "123 Test Street",
       };
 
-      // Wrap user data in { user: ... } as expected by the endpoint
       const res = await agent.post(Paths.Users.Register).send({ user: newUser });
       expect(res.status).toBe(HttpStatusCodes.CREATED);
       const body = res.body as UserResponse;
@@ -67,10 +66,9 @@ describe("UserRoutes", () => {
     };
 
     it("devrait connecter un utilisateur existant avec un code 200", async () => {
-      // D'abord créer l'utilisateur
       await agent.post(Paths.Users.Register).send({ user: testUser });
 
-      // Puis se connecter
+      // se connecter
       const res = await agent.post(Paths.Users.Login).send({
         email: testUser.email,
         password: testUser.password,

@@ -20,7 +20,7 @@ export default {
     Base: "/stock",
     Get: "/all",
     GetById: "/:id",
-    GetByStockName: "/stock/:name",
+    GetByStockName: "/:name",
     GetByShortName: "/shortname/:shortName",
     GetByUnitPrice: "/price/:price",
     GetByDispo: "/dispo/:status",
