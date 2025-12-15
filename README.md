@@ -2,6 +2,8 @@
 
 API REST pour l'application de simulation de trading d'actions StockTrader.
 
+[api.justin.intebec.ca](https://api.justin.intebec.ca/)
+
 ## Fonctionnalités
 
 - **Authentification** : Inscription, connexion et gestion des tokens JWT
